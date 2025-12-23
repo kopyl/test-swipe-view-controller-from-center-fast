@@ -18,6 +18,7 @@ class MainViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         button.addTarget(self, action: #selector(pushViewController), for: .touchUpInside)
     }
     
@@ -33,28 +34,119 @@ class SecondaryViewController: UIViewController {
     }
 }
 
-class SwipeNavigationController: UINavigationController, UIGestureRecognizerDelegate {
+class SwipeNavigationController: UINavigationController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupFullScreenSwipeBack()
-    }
+      private var interactiveTransition: UIPercentDrivenInteractiveTransition?
+      private var panGesture: UIPanGestureRecognizer!
 
-    private func setupFullScreenSwipeBack() {
-        guard let interactivePopGestureRecognizer = interactivePopGestureRecognizer,
-              let targets = interactivePopGestureRecognizer.value(forKey: "targets") else { return }
+      override func viewDidLoad() {
+          super.viewDidLoad()
+          
+          delegate = self
 
-        let panGesture = UIPanGestureRecognizer()
-        panGesture.setValue(targets, forKey: "targets")
-        panGesture.delegate = self
-        view.addGestureRecognizer(panGesture)
-    }
+          panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleNavigationTransition(_:)))
+          panGesture.delegate = self
+          view.addGestureRecognizer(panGesture)
+
+          interactivePopGestureRecognizer?.isEnabled = false
+      }
+
+      @objc private func handleNavigationTransition(_ gesture: UIPanGestureRecognizer) {
+          let translation = gesture.translation(in: view)
+          let velocity = gesture.velocity(in: view)
+          let progress = max(0, min(1, translation.x / view.bounds.width))
+
+          switch gesture.state {
+          case .began:
+              interactiveTransition = UIPercentDrivenInteractiveTransition()
+              popViewController(animated: true)
+
+          case .changed:
+              interactiveTransition?.update(progress)
+
+          case .ended, .cancelled:
+              if progress > 0.3 || velocity.x > 500 {
+                  interactiveTransition?.finish()
+              } else {
+                  interactiveTransition?.cancel()
+              }
+              interactiveTransition = nil
+
+          default:
+              interactiveTransition?.cancel()
+              interactiveTransition = nil
+          }
+      }
     
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard viewControllers.count > 1 else { return false }
-        return true
-    }
-}
+    override var delegate: UINavigationControllerDelegate? {
+          didSet {
+              if delegate !== self {
+                  super.delegate = self
+              }
+          }
+      }
+  }
+
+extension SwipeNavigationController: UIGestureRecognizerDelegate {
+      func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+          guard viewControllers.count > 1,
+                let pan = gestureRecognizer as? UIPanGestureRecognizer else { return false }
+
+          let velocity = pan.velocity(in: view)
+          return velocity.x > 0 && abs(velocity.x) > abs(velocity.y)
+      }
+  }
+
+extension SwipeNavigationController: UINavigationControllerDelegate {
+
+      func navigationController(_ navigationController: UINavigationController,
+                                animationControllerFor operation: UINavigationController.Operation,
+                                from fromVC: UIViewController,
+                                to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+          if operation == .pop {
+              return PopAnimator()
+          }
+          return nil
+      }
+
+      func navigationController(_ navigationController: UINavigationController,
+                                interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+          return interactiveTransition
+      }
+  }
+
+class PopAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+
+      func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+          return 0.3
+      }
+
+      func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+          guard let fromView = transitionContext.view(forKey: .from),
+                let toView = transitionContext.view(forKey: .to) else {
+              transitionContext.completeTransition(false)
+              return
+          }
+
+          let container = transitionContext.containerView
+          let width = container.bounds.width
+
+          // Previous VC starts slightly to the left (parallax effect)
+          toView.frame = container.bounds
+          toView.frame.origin.x = -width * 0.3
+          container.insertSubview(toView, belowSubview: fromView)
+
+          let duration = transitionDuration(using: transitionContext)
+
+          UIView.animate(withDuration: duration, delay: 0, options: .curveLinear) {
+              fromView.frame.origin.x = width       // Current slides right
+              toView.frame.origin.x = 0             // Previous slides to center
+          } completion: { _ in
+              let completed = !transitionContext.transitionWasCancelled
+              transitionContext.completeTransition(completed)
+          }
+      }
+  }
 
 @main
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, UIApplicationDelegate {
