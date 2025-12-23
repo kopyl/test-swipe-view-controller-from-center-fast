@@ -30,12 +30,16 @@ class SwipeNavigationController: UINavigationController {
             
         case .ended, .cancelled:
             let velocity = gesture.velocity(in: view)
-            if progress > 0.3 || velocity.x > 500 {
-                interactiveTransition?.finish()
-            } else {
-                interactiveTransition?.cancel()
+            let shouldFinish = progress > 0.3 || velocity.x > 500
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
+                if shouldFinish {
+                    self.interactiveTransition?.finish()
+                } else {
+                    self.interactiveTransition?.cancel()
+                }
+                self.interactiveTransition = nil
             }
-            interactiveTransition = nil
             
         default:
             break
