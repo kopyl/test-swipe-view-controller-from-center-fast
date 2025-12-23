@@ -3,7 +3,7 @@ import XCTest
 func preparePushVCTest() -> (XCUICoordinate, XCUICoordinate) {
     let app = XCUIApplication()
     app.launch()
-
+    
     let pushButton = app.buttons["Push VC"]
     XCTAssertTrue(pushButton.waitForExistence(timeout: 5))
     pushButton.tap()
@@ -19,7 +19,7 @@ func preparePushVCTest() -> (XCUICoordinate, XCUICoordinate) {
 
 
 final class UITests: XCTestCase {
-
+    
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
