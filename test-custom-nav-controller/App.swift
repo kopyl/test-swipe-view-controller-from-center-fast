@@ -77,14 +77,6 @@ class SwipeNavigationController: UINavigationController {
               interactiveTransition = nil
           }
       }
-    
-    override var delegate: UINavigationControllerDelegate? {
-          didSet {
-              if delegate !== self {
-                  super.delegate = self
-              }
-          }
-      }
   }
 
 extension SwipeNavigationController: UIGestureRecognizerDelegate {
