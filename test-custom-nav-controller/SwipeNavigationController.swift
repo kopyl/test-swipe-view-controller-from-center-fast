@@ -88,7 +88,7 @@ class PopAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         toView.frame = container.bounds.offsetBy(dx: -width * 0.3, dy: 0)
         container.insertSubview(toView, belowSubview: fromView)
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) {
             fromView.frame.origin.x = width
             toView.frame.origin.x = 0
         } completion: { _ in
