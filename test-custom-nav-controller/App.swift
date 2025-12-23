@@ -40,7 +40,7 @@ class SwipeNavigationController: UINavigationController, UIGestureRecognizerDele
 
     private func setupFullScreenSwipeBack() {
         guard let interactivePopGestureRecognizer = interactivePopGestureRecognizer,
-              let targets = interactivePopGestureRecognizer.value(forKey: "targets") as? [AnyObject] else { return }
+              let targets = interactivePopGestureRecognizer.value(forKey: "targets") else { return }
 
         let panGesture = UIPanGestureRecognizer()
         panGesture.setValue(targets, forKey: "targets")
