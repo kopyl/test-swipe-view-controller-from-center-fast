@@ -23,14 +23,12 @@ final class UITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
-
-    @MainActor
+    
     func testPushViewControllerAndSwipeBackWithGlitch() throws {
         let (startPoint, endPoint) = preparePushVCTest()
         startPoint.press(forDuration: 0.05, thenDragTo: endPoint, withVelocity: XCUIGestureVelocity(3000), thenHoldForDuration: 0)
     }
     
-    @MainActor
     func testPushViewControllerAndSwipeBackNoGlitch() throws {
         let (startPoint, endPoint) = preparePushVCTest()
         startPoint.press(forDuration: 0.05, thenDragTo: endPoint, withVelocity: .fast, thenHoldForDuration: 0)
