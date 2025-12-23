@@ -93,50 +93,39 @@ extension SwipeNavigationController: UINavigationControllerDelegate {
                                 animationControllerFor operation: UINavigationController.Operation,
                                 from fromVC: UIViewController,
                                 to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-          if operation == .pop {
-              return PopAnimator()
-          }
-          return nil
+          operation == .pop ? PopAnimator() : nil
       }
 
       func navigationController(_ navigationController: UINavigationController,
                                 interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-          return interactiveTransition
+          interactiveTransition
       }
   }
 
 class PopAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
-      func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-          return 0.3
+  func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval { 0.3 }
+
+  func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+      guard let fromView = transitionContext.view(forKey: .from),
+            let toView = transitionContext.view(forKey: .to) else {
+          return transitionContext.completeTransition(false)
       }
 
-      func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-          guard let fromView = transitionContext.view(forKey: .from),
-                let toView = transitionContext.view(forKey: .to) else {
-              transitionContext.completeTransition(false)
-              return
-          }
+      let container = transitionContext.containerView
+      let width = container.bounds.width
 
-          let container = transitionContext.containerView
-          let width = container.bounds.width
+      toView.frame = container.bounds.offsetBy(dx: -width * 0.3, dy: 0)
+      container.insertSubview(toView, belowSubview: fromView)
 
-          // Previous VC starts slightly to the left (parallax effect)
-          toView.frame = container.bounds
-          toView.frame.origin.x = -width * 0.3
-          container.insertSubview(toView, belowSubview: fromView)
-
-          let duration = transitionDuration(using: transitionContext)
-
-          UIView.animate(withDuration: duration, delay: 0, options: .curveLinear) {
-              fromView.frame.origin.x = width       // Current slides right
-              toView.frame.origin.x = 0             // Previous slides to center
-          } completion: { _ in
-              let completed = !transitionContext.transitionWasCancelled
-              transitionContext.completeTransition(completed)
-          }
+      UIView.animate(withDuration: 0.3) {
+          fromView.frame.origin.x = width
+          toView.frame.origin.x = 0
+      } completion: { _ in
+          transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
       }
   }
+}
 
 @main
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, UIApplicationDelegate {
