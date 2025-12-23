@@ -37,14 +37,13 @@ class SecondaryViewController: UIViewController {
 class SwipeNavigationController: UINavigationController {
 
       private var interactiveTransition: UIPercentDrivenInteractiveTransition?
-      private var panGesture: UIPanGestureRecognizer!
 
       override func viewDidLoad() {
           super.viewDidLoad()
-          
+
           delegate = self
 
-          panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleNavigationTransition(_:)))
+          let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleNavigationTransition(_:)))
           panGesture.delegate = self
           view.addGestureRecognizer(panGesture)
 
@@ -53,7 +52,6 @@ class SwipeNavigationController: UINavigationController {
 
       @objc private func handleNavigationTransition(_ gesture: UIPanGestureRecognizer) {
           let translation = gesture.translation(in: view)
-          let velocity = gesture.velocity(in: view)
           let progress = max(0, min(1, translation.x / view.bounds.width))
 
           switch gesture.state {
@@ -65,6 +63,7 @@ class SwipeNavigationController: UINavigationController {
               interactiveTransition?.update(progress)
 
           case .ended, .cancelled:
+              let velocity = gesture.velocity(in: view)
               if progress > 0.3 || velocity.x > 500 {
                   interactiveTransition?.finish()
               } else {
@@ -73,8 +72,7 @@ class SwipeNavigationController: UINavigationController {
               interactiveTransition = nil
 
           default:
-              interactiveTransition?.cancel()
-              interactiveTransition = nil
+              break
           }
       }
   }
