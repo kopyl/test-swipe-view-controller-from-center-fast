@@ -1,5 +1,7 @@
 import UIKit
 
+/// Source: https://stackoverflow.com/questions/32914006/swipe-to-go-back-only-works-on-edge-of-screen
+
 class MainViewController: UIViewController {
     let button = UIButton()
     
