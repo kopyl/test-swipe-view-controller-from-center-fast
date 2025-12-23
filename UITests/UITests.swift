@@ -24,12 +24,12 @@ final class UITests: XCTestCase {
         continueAfterFailure = false
     }
     
-    func testPushViewControllerAndSwipeBackWithGlitch() throws {
+    func testPushViewControllerAndSwipeBackFromCenterWithGlitch() throws {
         let (startPoint, endPoint) = preparePushVCTest()
         startPoint.press(forDuration: 0.05, thenDragTo: endPoint, withVelocity: XCUIGestureVelocity(3000), thenHoldForDuration: 0)
     }
     
-    func testPushViewControllerAndSwipeBackNoGlitch() throws {
+    func testPushViewControllerAndSwipeBackFromCenterNoGlitch() throws {
         let (startPoint, endPoint) = preparePushVCTest()
         startPoint.press(forDuration: 0.05, thenDragTo: endPoint, withVelocity: .fast, thenHoldForDuration: 0)
     }
