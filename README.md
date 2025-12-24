@@ -21,6 +21,11 @@ With the help of Claude Code I was able to write a version of a full-screen navi
 
 But the implementation does not feel native and fluent in animations.
 
+Later I added a UI test for swiping back from the left edge of the screen on the standard UINavigationController:
+- https://github.com/kopyl/test-swipe-view-controller-from-center-fast/blob/4b9b2de2b874e95ba8c3188a34200529d22833bf/UITests/UITests.swift#L37
+Surprisingly, the standard UINavigationController also has a glitch when swiping back very fast from the left edge of the screen.
+This means that the problem is not in my implementation, but in the way iOS incorrectly handles fast swipe back gestures.
+
 Stackoverflow answers:
 - https://stackoverflow.com/questions/22244688/navigation-pop-view-when-swipe-right-like-instagram-iphone-app-how-i-achieve-thi/22244990#22244990
 - https://stackoverflow.com/questions/32914006/swipe-to-go-back-only-works-on-edge-of-screen
