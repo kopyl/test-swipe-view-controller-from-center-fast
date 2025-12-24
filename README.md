@@ -18,7 +18,6 @@ This behaviour can be seen on a UI XC test: https://github.com/kopyl/test-swipe-
 - Running `testPushViewControllerAndSwipeBackFromCenterNoGlitch` test does not trigger the glitch, because the swipe gesture is executed much slower.
 
 With the help of Claude Code I was able to write a version of a full-screen navigation controller which does not have the glitch: https://github.com/kopyl/test-swipe-view-controller-from-center-fast/blob/47deaed7b01c7546b45a9de11aade69809dad4d9/test-custom-nav-controller/SwipeNavigationController.swift .
-d895565
 
 But the implementation does not ƒeel native and fluent in animations.
 
@@ -27,6 +26,5 @@ Stackoverflow answers:
 - https://stackoverflow.com/questions/32914006/swipe-to-go-back-only-works-on-edge-of-screen
 
 Telegram implementation:
-- Commit: 5e724b92eac51455c265cf9ae3d47ec1a63f5905
-- submodules/Display/Display/InteractiveTransitionGestureRecognizer.swift
-- submodules/Display/Display/Navigation/NavigationContainer.swift
+- https://github.com/TelegramMessenger/Telegram-iOS/blob/5e724b92eac51455c265cf9ae3d47ec1a63f5905/submodules/Display/Display/InteractiveTransitionGestureRecognizer.swift
+- https://github.com/TelegramMessenger/Telegram-iOS/blob/5e724b92eac51455c265cf9ae3d47ec1a63f5905/submodules/Display/Display/Navigation/NavigationContainer.swift
