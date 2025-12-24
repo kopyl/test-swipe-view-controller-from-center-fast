@@ -19,7 +19,7 @@ This behaviour can be seen on a UI XC test: https://github.com/kopyl/test-swipe-
 
 With the help of Claude Code I was able to write a version of a full-screen navigation controller which does not have the glitch: https://github.com/kopyl/test-swipe-view-controller-from-center-fast/blob/47deaed7b01c7546b45a9de11aade69809dad4d9/test-custom-nav-controller/SwipeNavigationController.swift .
 
-But the implementation does not ƒeel native and fluent in animations.
+But the implementation does not feel native and fluent in animations.
 
 Stackoverflow answers:
 - https://stackoverflow.com/questions/22244688/navigation-pop-view-when-swipe-right-like-instagram-iphone-app-how-i-achieve-thi/22244990#22244990
