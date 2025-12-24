@@ -28,3 +28,8 @@ Stackoverflow answers:
 Telegram implementation:
 - https://github.com/TelegramMessenger/Telegram-iOS/blob/5e724b92eac51455c265cf9ae3d47ec1a63f5905/submodules/Display/Display/InteractiveTransitionGestureRecognizer.swift
 - https://github.com/TelegramMessenger/Telegram-iOS/blob/5e724b92eac51455c265cf9ae3d47ec1a63f5905/submodules/Display/Display/Navigation/NavigationContainer.swift
+
+Interesting repositories:
+- https://github.com/stringcode86/UIPercentDrivenInteractiveTransitionWithCABasicAnimation?tab=readme-ov-file
+- https://github.com/glushchenko/fsnotes/blob/54f5b77bc230cfdfec38fbf16254e8d1e75b5629/FSNotes%20iOS/EditorViewController.swift#L9
+- https://github.com/tonkeeper/ios/blob/64f53ff3d48fbde9e84ea4673d9588704934d6a6/LocalPackages/TKUIKit/TKUIKit/Sources/TKUIKit/UIKit/UINavigationController/UINavigationController%2BSwipeBack.swift#L2
