@@ -32,13 +32,17 @@ class SwipeNavigationController: UINavigationController {
             let velocity = gesture.velocity(in: view)
             let shouldFinish = progress > 0.3 || velocity.x > 500
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) { [weak self] in
                 if shouldFinish {
-                    self.interactiveTransition?.finish()
+                    
+                    self?.interactiveTransition?.finish()
                 } else {
-                    self.interactiveTransition?.cancel()
+                    let speed = 0.3
+                    self?.interactiveTransition?.completionSpeed = CGFloat(speed)
+                    self?.interactiveTransition?.completionCurve = .easeInOut
+                    self?.interactiveTransition?.cancel()
                 }
-                self.interactiveTransition = nil
+                self?.interactiveTransition = nil
             }
             
         default:
