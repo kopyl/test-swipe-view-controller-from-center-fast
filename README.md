@@ -14,8 +14,8 @@ But there was a problem with this approach:
 When you swipe very fast (to go to the previous VC), the latest VC stays in place and for a brief moment you see the previous VC.
 
 This behaviour can be seen on a UI XC test: https://github.com/kopyl/test-swipe-view-controller-from-center-fast/blob/4c7ae207927191f8b706e2a4097a69aff01fbb77/UITests/UITests.swift#L27
-- Running testPushViewControllerAndSwipeBackFromCenterWithGlitch test triggers this glitch.
-- Running testPushViewControllerAndSwipeBackFromCenterNoGlitch test does not trigger the glitch, because the swipe gesture is executed much slower.
+- Running `testPushViewControllerAndSwipeBackFromCenterWithGlitch` test triggers this glitch.
+- Running `testPushViewControllerAndSwipeBackFromCenterNoGlitch` test does not trigger the glitch, because the swipe gesture is executed much slower.
 
 With the help of Claude Code I was able to write a version of a full-screen navigation controller which does not have the glitch: https://github.com/kopyl/test-swipe-view-controller-from-center-fast/blob/47deaed7b01c7546b45a9de11aade69809dad4d9/test-custom-nav-controller/SwipeNavigationController.swift .
 d895565
